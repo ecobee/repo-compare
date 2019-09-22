@@ -1,11 +1,11 @@
-name: 'Scheduled workflow'
+name: 'Daily workflow'
 on:
   schedule:
-    - cron:  '* * * * *'
+    - cron:  '0 8 * * *'
 
 jobs:
   build:
-    name: Scheduled
+    name: Stale Master Notifier
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
