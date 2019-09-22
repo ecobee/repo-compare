@@ -21,7 +21,7 @@ const run = async (): Promise<void> => {
             repo
         })
         if (releases.length == 0) return
-        const latestRelease = releases.find(element => element.prerelease = includePrerelease)
+        const latestRelease = releases.find(element => element.prerelease == includePrerelease)
         if (latestRelease == null) return
         const { data: comparison } = await octokit.repos.compareCommits({
             owner,
