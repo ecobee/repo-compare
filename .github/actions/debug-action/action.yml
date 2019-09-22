@@ -1,6 +1,10 @@
 name: 'debug-action'
 description: 'Outputs debug information'
 author: 'cory taylor'
+inputs:
+  slack-channel:
+    description: What channel do you want to send the notification to?
+    default: "#general"
 runs:
   using: 'node12'
   main: './debug.js'
