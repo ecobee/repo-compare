@@ -13,4 +13,6 @@ jobs:
       - run: npm run build
       - uses: ./.github/actions/debug-action
         with:
-            slack-channel: #springfield
+            include-prerelease: false
+        id: debug
+      - run: echo The latest release - ${{ steps.debug.outputs.latest-release }}

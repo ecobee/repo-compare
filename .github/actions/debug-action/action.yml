@@ -1,10 +1,13 @@
-name: 'debug-action'
-description: 'Outputs debug information'
+name: 'latest-release-action'
+description: 'Outputs the latest release'
 author: 'cory taylor'
 inputs:
-  slack-channel:
-    description: What channel do you want to send the notification to?
-    default: "#general"
+  include-prerelease:
+    description: Do you want to include pre-releases?
+    default: false
+outputs:
+  latest-release:
+    description: Latest release for this repository
 runs:
   using: 'node12'
   main: './debug.js'

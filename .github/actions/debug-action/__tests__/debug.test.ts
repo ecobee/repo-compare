@@ -24,6 +24,17 @@ describe('debug action debug messages', () => {
   it('outputs a debug message', async () => {
     const debugMock = jest.spyOn(core, 'debug')
     await run()
-    expect(debugMock).toHaveBeenCalledWith('👋 Hello! I will notify #general! 🙌')
+    expect(debugMock).toHaveBeenCalledWith('👋 Hello! I will include pre-releases false! 🙌')
+  })
+})
+
+describe('debug action output', () => {
+  it('sets the action output', async () => {
+    const setOutputMock = jest.spyOn(core, 'setOutput')
+    await run()
+    expect(setOutputMock).toHaveBeenCalledWith(
+      'latest-release',
+      '👋 Hello! I will include pre-releases false! 🙌',
+    )
   })
 })

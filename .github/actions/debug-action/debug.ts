@@ -1,8 +1,10 @@
 import * as core from '@actions/core'
 
 const run = async (): Promise<void> => {
-    const channel = core.getInput('slack-channel')
-    core.debug(`👋 Hello! I will notify ${channel}! 🙌`)
+    const includePrerelease = core.getInput('include-prerelease')
+    const message = `👋 Hello! I will include pre-releases ${includePrerelease}! 🙌`
+    core.debug(message)
+    core.setOutput('latest-release', message)
   }
 
 run()
