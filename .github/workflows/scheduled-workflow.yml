@@ -1,0 +1,20 @@
+name: 'Scheduled workflow'
+on:
+  schedule:
+    - cron:  '* * * * *'
+
+jobs:
+  build:
+    name: Scheduled
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - run: npm install
+      - run: npm run build
+      - uses: ./.github/actions/debug-action
+        with:
+            include-prerelease: false
+        id: debug
+      - run: echo The latest release - ${{ steps.debug.outputs.latest-release }}
