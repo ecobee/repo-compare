@@ -6,8 +6,10 @@ inputs:
     description: Do you want to include pre-releases?
     default: false
 outputs:
-  latest-release:
-    description: Latest release for this repository
+  unreleased-commits-count:
+    description: How many commits are unreleased on master
+  unreleased-commits:
+    description: Unreleased commits
 runs:
   using: 'node12'
   main: './debug.js'
