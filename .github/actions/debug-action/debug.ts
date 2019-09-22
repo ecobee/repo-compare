@@ -18,8 +18,15 @@ const run = async (): Promise<void> => {
             owner,
             repo
         });
-        console.log(releases);
+        if (releases.length == 0) return
         
+        const { data: comparison } = await octokit.repos.compareCommits({
+            owner,
+            repo,
+            base: releases[0].tag_name,
+            head: 'master'
+        });
+        console.log(comparison);
         core.debug(message);
         core.setOutput("latest-release", message);
     } catch (error) {
