@@ -1,3 +1,6 @@
+# Ignore any generated TypeScript -> JavaScript files
+.github/actions/**/*.js
+
 __tests__/runner/*
 
 # comment out in distribution branches
