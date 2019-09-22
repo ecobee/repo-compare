@@ -14,5 +14,15 @@ jobs:
       - uses: ./.github/actions/debug-action
         with:
             include-prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         id: debug
       - run: echo The latest release - ${{ steps.debug.outputs.latest-release }}
+      - name: Slack Notify
+        uses: rtCamp/action-slack-notify@v1.0.0
+        with:
+          SLACK_CHANNEL: "#springfield-bots"
+          SLACK_USERNAME: shipit
+          SLACK_ICON: https://github.githubassets.com/images/icons/emoji/shipit.png
+          SLACK_TITLE: Master Is Stale
+          SLACK_MESSAGE: Looks like there are x commits to ship.

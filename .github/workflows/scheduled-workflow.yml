@@ -16,5 +16,7 @@ jobs:
       - uses: ./.github/actions/debug-action
         with:
             include-prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         id: debug
       - run: echo The latest release - ${{ steps.debug.outputs.latest-release }}
