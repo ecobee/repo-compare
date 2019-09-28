@@ -27,4 +27,4 @@ jobs:
           SLACK_OVERRIDE_MESSAGE: true
         uses: Ilshidur/action-slack@master
         with:
-          args: 'There are ${{ steps.compare.outputs.unreleased-commit-count }} commits to ship.\nCommits:\n${{ steps.compare.outputs.unreleased-commit-messages }}'
+          args: 'There are ${{ steps.compare.outputs.unreleased-commit-count }} commits to ship.\nCommits:\n```${{ steps.compare.outputs.unreleased-commit-messages }}```'
