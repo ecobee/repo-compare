@@ -32,7 +32,7 @@ const run = async (): Promise<void> => {
         console.log(comparison)
         core.debug(`Master is ${comparison.status} by ${comparison.total_commits} commits`)
         core.setOutput('unreleased-commit-count', comparison.total_commits.toString())
-        core.setOutput('unreleased-commit-messages', comparison.commits.map(commit => `${commit.commit.message}\n`).join(' '))
+        core.setOutput('unreleased-commit-messages', comparison.commits.map(commit => `@${commit.author.login} - ${commit.commit.message}\n`).join(''))
         core.setOutput('unreleased-diff-url', comparison.html_url)
     } catch (error) {
         core.setFailed(`repo-compare failure: ${error}`)
