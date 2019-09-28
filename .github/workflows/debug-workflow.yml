@@ -17,8 +17,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         id: compare
-      - run: echo unreleased-commits-count - ${{ steps.compare.outputs.unreleased-commits-count }}
-      - run: echo unreleased-commits-messages - ${{ steps.compare.outputs.unreleased-commits-messages }}
+      - run: echo unreleased-commit-count - ${{ steps.compare.outputs.unreleased-commit-count }}
+      - run: echo unreleased-commit-messages - ${{ steps.compare.outputs.unreleased-commit-messages }}
       - name: Slack Notify
         uses: rtCamp/action-slack-notify@v1.0.0
         with:
@@ -28,5 +28,5 @@ jobs:
           SLACK_ICON: https://github.githubassets.com/images/icons/emoji/shipit.png
           SLACK_TITLE: Master Is Stale
           SLACK_MESSAGE: |
-            There are ${{ steps.compare.outputs.unreleased-commits-count }} commits to ship.
-            ${{ steps.compare.outputs.unreleased-commits-messages }}
+            There are ${{ steps.compare.outputs.unreleased-commit-count }} commits to ship.
+            ${{ steps.compare.outputs.unreleased-commit-messages }}

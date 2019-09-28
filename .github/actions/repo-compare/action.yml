@@ -1,12 +1,12 @@
 name: 'latest-release-action'
-description: 'Outputs the latest release'
+description: 'Outputs the number of unreleased commits'
 author: 'cory taylor'
 inputs:
   include-prerelease:
     description: Do you want to include pre-releases?
     default: false
 outputs:
-  unreleased-commits-count:
+  unreleased-commit-count:
     description: How many commits are unreleased on master
   unreleased-commit-messages:
     description: Unreleased commit messages
