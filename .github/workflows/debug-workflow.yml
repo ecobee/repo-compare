@@ -27,8 +27,9 @@ jobs:
           SLACK_USERNAME: shipit
           SLACK_ICON: https://github.githubassets.com/images/icons/emoji/shipit.png
           SLACK_TITLE: Master Is Stale
-          SLACK_MESSAGE: There are ${{ steps.compare.outputs.unreleased-commit-count }} commits to ship.\n
+          SLACK_MESSAGE: "There are ${{ steps.compare.outputs.unreleased-commit-count }} commits to ship.\n
             Commits:\n
-            "${{ steps.compare.outputs.unreleased-commit-messages }}"
+            ${{ steps.compare.outputs.unreleased-commit-messages }}"
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+
