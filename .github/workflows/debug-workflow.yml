@@ -19,15 +19,12 @@ jobs:
         id: compare
       - run: echo unreleased-commit-count - ${{ steps.compare.outputs.unreleased-commit-count }}
       - run: echo unreleased-commit-messages - "${{ steps.compare.outputs.unreleased-commit-messages }}"
-      - name: Slack Notify
-        uses: rtCamp/action-slack-notify@v1.0.0
-        with:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_CHANNEL: "#springfield-bots"
-          SLACK_USERNAME: shipit
-          SLACK_ICON: https://github.githubassets.com/images/icons/emoji/shipit.png
-          SLACK_TITLE: Master Is Stale
-          SLACK_MESSAGE: There are ${{ steps.compare.outputs.unreleased-commit-count }} commits to ship.
+      - name: Slack notification
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-
+          SLACK_USERNAME: shipit
+          SLACK_CHANNEL: "#springfield-bots"
+          SLACK_OVERRIDE_MESSAGE: true
+        uses: Ilshidur/action-slack@master
+        with:
+          args: 'There are ${{ steps.compare.outputs.unreleased-commit-count }} commits to ship.'
