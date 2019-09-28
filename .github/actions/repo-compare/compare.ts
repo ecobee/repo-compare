@@ -29,10 +29,10 @@ const run = async (): Promise<void> => {
             base: latestRelease.tag_name,
             head: 'master'
         })
-        console.log(comparison.total_commits)
+        console.log(comparison)
         core.debug(`Master is ${comparison.status} by ${comparison.total_commits} commits`)
         core.setOutput('unreleased-commit-count', comparison.total_commits.toString())
-        core.setOutput('unreleased-commit-messages', comparison.commits.map(commit => `${commit.commit.message}\n`).toString())
+        core.setOutput('unreleased-commit-messages', comparison.commits.map(commit => `${commit.commit.message}\n`).join())
     } catch (error) {
         core.setFailed(`repo-compare failure: ${error}`)
     }
