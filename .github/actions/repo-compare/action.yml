@@ -10,6 +10,8 @@ outputs:
     description: How many commits are unreleased on master
   unreleased-commit-messages:
     description: Unreleased commit messages
+  unreleased-diff-url:
+    description: Diff Url
 runs:
   using: 'node12'
   main: './compare.js'
