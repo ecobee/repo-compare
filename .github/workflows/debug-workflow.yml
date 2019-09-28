@@ -11,18 +11,19 @@ jobs:
           fetch-depth: 1
       - run: npm install
       - run: npm run build
-      - uses: ./.github/actions/debug-action
+      - uses: ./.github/actions/repo-compare
         with:
             include-prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        id: debug
-      - run: echo unreleased-commits - ${{ steps.debug.outputs.unreleased-commits }}
+        id: compare
+      - run: echo unreleased-commits - ${{ steps.compare.outputs.unreleased-commits }}
       - name: Slack Notify
         uses: rtCamp/action-slack-notify@v1.0.0
         with:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_CHANNEL: "#springfield-bots"
           SLACK_USERNAME: shipit
           SLACK_ICON: https://github.githubassets.com/images/icons/emoji/shipit.png
           SLACK_TITLE: Master Is Stale
-          SLACK_MESSAGE: Looks like there are x commits to ship.
+          SLACK_MESSAGE: There are ${{ steps.compare.outputs.unreleased-commits }} commits to ship.

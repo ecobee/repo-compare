@@ -8,8 +8,8 @@ inputs:
 outputs:
   unreleased-commits-count:
     description: How many commits are unreleased on master
-  unreleased-commits:
-    description: Unreleased commits
+  unreleased-commit-messages:
+    description: Unreleased commit messages
 runs:
   using: 'node12'
-  main: './debug.js'
+  main: './compare.js'
