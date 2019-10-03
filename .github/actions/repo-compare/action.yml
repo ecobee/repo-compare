@@ -14,4 +14,4 @@ outputs:
     description: Diff Url
 runs:
   using: 'node12'
-  main: './compare.js'
+  main: './dist/index.js'
