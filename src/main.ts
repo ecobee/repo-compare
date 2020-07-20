@@ -3,8 +3,6 @@ import * as github from '@actions/github'
 
 const run = async (): Promise<void> => {
   try {
-    console.log({payload: github.context.payload})
-
     const includePrerelease: boolean = parseBoolean(
       core.getInput('include-prerelease', {
         required: false
@@ -20,18 +18,17 @@ const run = async (): Promise<void> => {
       owner,
       repo
     })
-    if (releases.length == 0) return
+    if (releases.length === 0) return
     const latestRelease = releases.find(
-      element => element.prerelease == includePrerelease
+      element => element.prerelease === includePrerelease
     )
-    if (latestRelease == null) return
+    if (latestRelease === null) return
     const {data: comparison} = await octokit.repos.compareCommits({
       owner,
       repo,
       base: latestRelease.tag_name,
       head: 'master'
     })
-    console.log(comparison)
     core.debug(
       `Master is ${comparison.status} by ${comparison.total_commits} commits`
     )
@@ -56,5 +53,5 @@ run()
 export default run
 
 function parseBoolean(toParse: string): boolean {
-  return !!(toParse && toParse.toLowerCase() == 'true')
+  return !!(toParse && toParse.toLowerCase() === 'true')
 }
