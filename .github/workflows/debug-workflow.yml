@@ -1,30 +1,23 @@
-name: 'Debug workflow'
-on: [push]
+name: "build-test"
+on: # rebuild any PRs and main branch changes
+  pull_request:
+  push:
+    branches:
+      - master
+      - 'releases/*'
 
 jobs:
-  build:
-    name: Debug
+  build: # make sure build/ci work properly
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-        with:
-          fetch-depth: 1
-      - run: npm install
-      - run: npm run build
-      - uses: ./.github/actions/repo-compare
-        with:
-            include-prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        id: compare
-      - run: echo unreleased-commit-count - ${{ steps.compare.outputs.unreleased-commit-count }}
-      - run: echo unreleased-commit-messages - "${{ steps.compare.outputs.unreleased-commit-messages }}"
-      - name: Slack notification
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_USERNAME: shipit
-          SLACK_CHANNEL: "#springfield-bots"
-          SLACK_OVERRIDE_MESSAGE: true
-        uses: Ilshidur/action-slack@master
-        with:
-          args: 'There are ${{ steps.compare.outputs.unreleased-commit-count }} commits to ship.\nCommits:\n```${{ steps.compare.outputs.unreleased-commit-messages }}```\n${{ steps.compare.outputs.unreleased-diff-url }}'
+    - uses: actions/checkout@v2
+    - run: |
+        npm install
+        npm run all
+  test: # make sure the action works on a clean machine without building
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ./
+      with:
+        milliseconds: 1000

@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import run from '../debug'
+import run from '..'
 import fs from 'fs'
 import yaml from 'js-yaml'
 
