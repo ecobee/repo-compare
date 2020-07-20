@@ -97,3 +97,7 @@ typings/
 
 # OS artifacts
 .DS_Store
+
+# Ignore built ts files
+__tests__/runner/*
+lib/**/*

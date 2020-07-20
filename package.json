@@ -25,7 +25,9 @@
   "author": "Cory Taylor",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.2.0"
+    "@actions/core": "^1.2.0",
+    "@actions/github": "1.1.0",
+    "@types/js-yaml": "3.12.1"
   },
   "devDependencies": {
     "@types/jest": "^24.0.23",
@@ -37,7 +39,6 @@
     "eslint-plugin-jest": "^22.21.0",
     "jest": "^24.9.0",
     "jest-circus": "^24.9.0",
-    "js-yaml": "^3.13.1",
     "prettier": "2.0.4",
     "ts-jest": "^24.2.0",
     "typescript": "^3.6.4"
