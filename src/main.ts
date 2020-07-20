@@ -26,7 +26,7 @@ const run = async (): Promise<void> => {
     const {data: comparison} = await octokit.repos.compareCommits({
       owner,
       repo,
-      base: latestRelease.tag_name,
+      base: latestRelease?.tag_name || '',
       head: 'master'
     })
     core.debug(
