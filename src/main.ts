@@ -13,7 +13,7 @@ const run = async (): Promise<void> => {
     const token = process.env['GITHUB_TOKEN']
     if (!token) return
 
-    const octokit: github.GitHub = new github.GitHub(token)
+    const octokit = github.getOctokit(token)
     const nwo = process.env['GITHUB_REPOSITORY'] || '/'
     const [owner, repo] = nwo.split('/')
     const {data: releases} = await octokit.repos.listReleases({
