@@ -32,6 +32,9 @@ const run = async (): Promise<void> => {
     core.debug(
       `Master is ${comparison.status} by ${comparison.total_commits} commits`
     )
+
+    core.setOutput('latest-release-date', latestRelease?.published_at || '')
+
     core.setOutput(
       'unreleased-commit-count',
       comparison.total_commits.toString()

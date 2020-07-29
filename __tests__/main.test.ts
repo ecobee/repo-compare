@@ -21,7 +21,9 @@ const comparisonResponse = {
     }
   ]
 }
-const tagResponse = [{tag_name: 'v1.0.0', prerelease: false}]
+const tagResponse = [
+  {tag_name: 'v1.0.0', prerelease: false, published_at: '2013-02-27T19:35:32Z'}
+]
 
 beforeEach(() => {
   jest.resetModules()
@@ -87,6 +89,14 @@ describe('Run', () => {
     expect(setOutput).toHaveBeenCalledWith(
       'unreleased-diff-url',
       'https://github.com/octocat/Hello-World/compare/master...topic'
-    )
-  })
+    )})
+
+    it('sets `latest-release-date', async () => {
+      const setOutput = jest.spyOn(core, 'setOutput')
+      await run()
+      expect(setOutput).toHaveBeenCalledWith(
+        'latest-release-date',
+        '2013-02-27T19:35:32Z'
+      )
+    })
 })
