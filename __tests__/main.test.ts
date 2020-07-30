@@ -2,7 +2,6 @@ import * as core from '@actions/core'
 import run from '../src/main'
 import fs from 'fs'
 import yaml from 'js-yaml'
-import {IncomingWebhook} from '@slack/webhook'
 
 const nock = require('nock')
 const comparisonResponse = {
@@ -107,7 +106,7 @@ describe('Run', () => {
   it('calculates how many commits the repo is behind', async () => {
     const debugMock = jest.spyOn(core, 'debug')
     await run()
-    expect(debugMock).toHaveBeenCalledWith('Master is behind by 1 commit(s)')
+    expect(debugMock).toHaveBeenCalledWith('master is behind by 1 commit(s)')
   })
 
   it('sets `unreleased-commit-count', async () => {

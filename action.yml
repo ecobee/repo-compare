@@ -4,14 +4,20 @@ author: 'cory taylor'
 inputs:
   include-prerelease:
     description: Do you want to include pre-releases?
-    default: false
+    default: "false"
+  default-branch:
+    description: "What branch to compare releases against"
+    required: false
+    default: "master"
 outputs:
   unreleased-commit-count:
-    description: How many commits are unreleased on master
+    description: How many commits are unreleased on the default branch
   unreleased-commit-messages:
     description: Unreleased commit messages
   unreleased-diff-url:
     description: Diff Url
+  latest-release-date:
+    description: The date of the last release
 runs:
   using: 'node12'
   main: 'dist/index.js'

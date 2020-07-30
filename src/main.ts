@@ -10,6 +10,9 @@ const run = async (): Promise<void> => {
         required: false
       })
     )
+    const defaultBranch: string = core.getInput('default-branch', {
+      required: false
+    })
     const slackWebhook = process.env['SLACK_WEBHOOK']
     if (!slackWebhook) return
 
@@ -34,10 +37,10 @@ const run = async (): Promise<void> => {
       owner,
       repo,
       base: latestRelease?.tag_name || '',
-      head: 'master'
+      head: defaultBranch
     })
     core.debug(
-      `Master is ${comparison.status} by ${comparison.total_commits} commit(s)`
+      `${defaultBranch} is ${comparison.status} by ${comparison.total_commits} commit(s)`
     )
 
     const lastReleaseDate = latestRelease?.published_at || ''
