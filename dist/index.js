@@ -1366,7 +1366,7 @@ function slackMessage(repoName, lastShippedDate, comparisonURL, totalCommits, co
         type: 'header',
         text: {
             type: 'plain_text',
-            text: `${repoName} was last shipped on ${parsedDate.toLocaleString()}`,
+            text: `${repoName} was last shipped on ${parsedDate.toUTCString()}`,
             emoji: true
         }
     };

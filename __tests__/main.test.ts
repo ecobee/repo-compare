@@ -33,7 +33,7 @@ const expectedSlackPost = {
       type: 'header',
       text: {
         type: 'plain_text',
-        text: 'bar was last shipped on 2/27/2013, 2:35:32 PM',
+        text: 'bar was last shipped on Wed, 27 Feb 2013 19:35:32 GMT',
         emoji: true
       }
     },
