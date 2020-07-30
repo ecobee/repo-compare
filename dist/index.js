@@ -1296,6 +1296,15 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
         const includePrerelease = parseBoolean(core.getInput('include-prerelease', {
             required: false
         }));
+        const defaultBranch = core.getInput('default-branch', {
+            required: false
+        });
+        const slackChannel = core.getInput('slack-channel', {
+            required: true
+        });
+        const slackUsername = core.getInput('slack-username', {
+            required: false
+        });
         const slackWebhook = process.env['SLACK_WEBHOOK'];
         if (!slackWebhook)
             return;
@@ -1319,9 +1328,9 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
             owner,
             repo,
             base: (latestRelease === null || latestRelease === void 0 ? void 0 : latestRelease.tag_name) || '',
-            head: 'master'
+            head: defaultBranch
         });
-        core.debug(`Master is ${comparison.status} by ${comparison.total_commits} commit(s)`);
+        core.debug(`${defaultBranch} is ${comparison.status} by ${comparison.total_commits} commit(s)`);
         const lastReleaseDate = (latestRelease === null || latestRelease === void 0 ? void 0 : latestRelease.published_at) || '';
         core.setOutput('latest-release-date', lastReleaseDate);
         core.setOutput('unreleased-commit-count', comparison.total_commits.toString());
@@ -1337,6 +1346,8 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
         (() => __awaiter(void 0, void 0, void 0, function* () {
             yield webhook.send({
                 text: `${repo} Last Shipped Notification`,
+                username: slackUsername,
+                channel: slackChannel,
                 blocks: slackMessage(repo, lastReleaseDate, comparison.html_url, comparison.total_commits, commits)
             });
         }))();
@@ -1345,7 +1356,6 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
         core.setFailed(`repo-compare failure: ${error}`);
     }
 });
-run();
 exports.default = run;
 function parseBoolean(toParse) {
     return !!(toParse && toParse.toLowerCase() === 'true');

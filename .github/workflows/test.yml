@@ -21,3 +21,4 @@ jobs:
     - uses: ./
       with:
         include-prerelease: true
+        slack-channel: "#test-channel"

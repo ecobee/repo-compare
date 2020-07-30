@@ -26,6 +26,8 @@ const tagResponse = [
 ]
 const expectedSlackPost = {
   text: 'bar Last Shipped Notification',
+  username: 'whoami',
+  channel: '#general',
   blocks: [
     {
       type: 'header',
@@ -75,9 +77,12 @@ beforeEach(() => {
     const envVar = `INPUT_${name.replace(/ /g, '_').toUpperCase()}`
     process.env[envVar] = doc.inputs[name]['default']
   })
+  process.env['INPUT_SLACK-CHANNEL'] = '#general'
+  process.env['INPUT_SLACK-USERNAME'] = 'whoami'
   process.env.SLACK_WEBHOOK = slackWebhook
   process.env.GITHUB_TOKEN = 'token'
   process.env.GITHUB_REPOSITORY = 'foo/bar'
+
   nock('https://api.github.com')
     .persist()
     .get('/repos/foo/bar/releases')

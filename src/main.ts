@@ -13,9 +13,15 @@ const run = async (): Promise<void> => {
     const defaultBranch: string = core.getInput('default-branch', {
       required: false
     })
+    const slackChannel: string = core.getInput('slack-channel', {
+      required: true
+    })
+    const slackUsername: string = core.getInput('slack-username', {
+      required: false
+    })
+
     const slackWebhook = process.env['SLACK_WEBHOOK']
     if (!slackWebhook) return
-
     const webhook = new IncomingWebhook(slackWebhook)
 
     const githubToken = process.env['GITHUB_TOKEN']
@@ -64,6 +70,8 @@ const run = async (): Promise<void> => {
     ;(async () => {
       await webhook.send({
         text: `${repo} Last Shipped Notification`,
+        username: slackUsername,
+        channel: slackChannel,
         blocks: slackMessage(
           repo,
           lastReleaseDate,
@@ -77,8 +85,6 @@ const run = async (): Promise<void> => {
     core.setFailed(`repo-compare failure: ${error}`)
   }
 }
-
-run()
 
 export default run
 

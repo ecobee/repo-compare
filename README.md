@@ -6,8 +6,36 @@
 
 Use this action to compare what's at the HEAD of your default branch, compared to what was lasted included in last release
 
+# Usage
+Create a new workflow in your repository with the following configuration
 
-## Code in Master
+```yaml
+name: 'Daily Release Workflow'
+on:
+  schedule:
+    - cron:  '0 13 * * 1-5'
+
+jobs:
+  build:
+    name: Stale Commits Notifier
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - uses: ecobee/repo-compare@master
+        with:
+            include-prerelease: false
+            default-branch: master
+            slack-username: shipit
+            slack-channel: '#springfield'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+```
+
+
+## Development
 
 Install the dependencies
 ```bash
@@ -23,11 +51,13 @@ Run the tests :heavy_check_mark:
 ```bash
 $ npm test
 
- PASS  ./index.test.js
-  ✓ throws invalid number (3ms)
-  ✓ wait 500 ms (504ms)
-  ✓ test runs (95ms)
-
+ PASS  __tests__/main.test.ts
+  Run
+    ✓ calculates how many commits the repo is behind (38ms)
+    ✓ sets `unreleased-commit-count (33ms)
+    ✓ sets `unreleased-commit-messages (18ms)
+    ✓ sets `unreleased-diff-url (15ms)
+    ✓ sets `latest-release-date (16ms)
 ...
 ```
 
@@ -43,7 +73,7 @@ $ git commit -a -m "prod dependencies"
 $ git push origin releases/v1
 ```
 
-Your action is now published! :rocket:
+The action is now published! :rocket:
 
 See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
 
