@@ -21,11 +21,17 @@ const run = async (): Promise<void> => {
     })
 
     const slackWebhook = process.env['SLACK_WEBHOOK']
-    if (!slackWebhook) return
+    if (!slackWebhook) {
+      core.error("environment variable 'SLACK_WEBHOOK' is not set")
+      return
+    }
     const webhook = new IncomingWebhook(slackWebhook)
 
     const githubToken = process.env['GITHUB_TOKEN']
-    if (!githubToken) return
+    if (!githubToken) {
+      core.error("environment variable 'GITHUB_TOKEN' is not set")
+      return
+    }
 
     const octokit = github.getOctokit(githubToken)
     const nwo = process.env['GITHUB_REPOSITORY'] || '/'
@@ -34,11 +40,17 @@ const run = async (): Promise<void> => {
       owner,
       repo
     })
-    if (releases.length === 0) return
+    if (releases.length === 0) {
+      core.error(`No releases for "${nwo}" has been found`)
+      return
+    }
     const latestRelease = releases.find(
       element => element.prerelease === includePrerelease
     )
-    if (latestRelease === null) return
+    if (!latestRelease) {
+      core.error(`Latest release for "${nwo}" could not be found`)
+      return
+    }
     const {data: comparison} = await octokit.repos.compareCommits({
       owner,
       repo,
@@ -51,11 +63,13 @@ const run = async (): Promise<void> => {
 
     const lastReleaseDate = latestRelease?.published_at || ''
     core.setOutput('latest-release-date', lastReleaseDate)
+    core.debug(`latest release date is ${lastReleaseDate}`)
 
     core.setOutput(
       'unreleased-commit-count',
       comparison.total_commits.toString()
     )
+
     const commits = comparison.commits
       .map(commit => `@${commit.author.login} - ${commit.commit.message}\n`)
       .join('')
@@ -64,11 +78,12 @@ const run = async (): Promise<void> => {
     core.setOutput('unreleased-diff-url', comparison.html_url)
 
     if (!comparison.total_commits) {
+      core.debug('Release is up-to-date')
       return
     }
 
     ;(async () => {
-      await webhook.send({
+      const res = await webhook.send({
         text: `${repo} Last Shipped Notification`,
         username: slackUsername,
         channel: slackChannel,
@@ -80,6 +95,7 @@ const run = async (): Promise<void> => {
           commits
         )
       })
+      core.debug(`Slack response: {res.text}`)
     })()
   } catch (error) {
     core.setFailed(`repo-compare failure: ${error}`)
