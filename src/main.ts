@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
 import {Block} from '@slack/web-api'
-import {IncomingWebhook, IncomingWebhookResult} from '@slack/webhook'
+import {IncomingWebhook} from '@slack/webhook'
 
 const run = async (): Promise<void> => {
   try {

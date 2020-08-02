@@ -1306,12 +1306,16 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
             required: false
         });
         const slackWebhook = process.env['SLACK_WEBHOOK'];
-        if (!slackWebhook)
+        if (!slackWebhook) {
+            core.error("environment variable 'SLACK_WEBHOOK' is not set");
             return;
+        }
         const webhook = new webhook_1.IncomingWebhook(slackWebhook);
         const githubToken = process.env['GITHUB_TOKEN'];
-        if (!githubToken)
+        if (!githubToken) {
+            core.error("environment variable 'GITHUB_TOKEN' is not set");
             return;
+        }
         const octokit = github.getOctokit(githubToken);
         const nwo = process.env['GITHUB_REPOSITORY'] || '/';
         const [owner, repo] = nwo.split('/');
@@ -1319,11 +1323,15 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
             owner,
             repo
         });
-        if (releases.length === 0)
+        if (releases.length === 0) {
+            core.error(`No releases for "${nwo}" has been found`);
             return;
+        }
         const latestRelease = releases.find(element => element.prerelease === includePrerelease);
-        if (latestRelease === null)
+        if (!latestRelease) {
+            core.error(`Latest release for "${nwo}" could not be found`);
             return;
+        }
         const { data: comparison } = yield octokit.repos.compareCommits({
             owner,
             repo,
@@ -1333,6 +1341,7 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
         core.debug(`${defaultBranch} is ${comparison.status} by ${comparison.total_commits} commit(s)`);
         const lastReleaseDate = (latestRelease === null || latestRelease === void 0 ? void 0 : latestRelease.published_at) || '';
         core.setOutput('latest-release-date', lastReleaseDate);
+        core.debug(`latest release date is ${lastReleaseDate}`);
         core.setOutput('unreleased-commit-count', comparison.total_commits.toString());
         const commits = comparison.commits
             .map(commit => `@${commit.author.login} - ${commit.commit.message}\n`)
@@ -1340,17 +1349,16 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
         core.setOutput('unreleased-commit-messages', commits);
         core.setOutput('unreleased-diff-url', comparison.html_url);
         if (!comparison.total_commits) {
+            core.debug('Release is up-to-date');
             return;
         }
-        ;
-        (() => __awaiter(void 0, void 0, void 0, function* () {
-            yield webhook.send({
-                text: `${repo} Last Shipped Notification`,
-                username: slackUsername,
-                channel: slackChannel,
-                blocks: slackMessage(repo, lastReleaseDate, comparison.html_url, comparison.total_commits, commits)
-            });
-        }))();
+        const slackRes = yield webhook.send({
+            text: `${repo} Last Shipped Notification`,
+            username: slackUsername,
+            channel: slackChannel,
+            blocks: slackMessage(repo, lastReleaseDate, comparison.html_url, comparison.total_commits, commits)
+        });
+        core.debug(`Slack response: ${slackRes.text}`);
     }
     catch (error) {
         core.setFailed(`repo-compare failure: ${error}`);

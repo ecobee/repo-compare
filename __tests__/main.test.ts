@@ -64,9 +64,7 @@ describe('Run', () => {
     expect(debugMock).toHaveBeenCalledWith(
       'latest release date is 2013-02-27T19:35:32Z'
     )
-    expect(debugMock).toHaveBeenCalledWith(
-      'Slack response: success'
-    )
+    expect(debugMock).toHaveBeenCalledWith('Slack response: success')
     expect(setOutput).toHaveBeenCalledWith('unreleased-commit-count', '1')
     expect(setOutput).toHaveBeenCalledWith(
       'unreleased-commit-messages',
@@ -135,8 +133,6 @@ describe('Run', () => {
       .get('/repos/foo/bar/compare/v1.0.0...master')
       .reply(200, upToDateComparisonResponse)
     await run()
-    expect(debugMock).toHaveBeenCalledWith(
-      'Release is up-to-date'
-    )
+    expect(debugMock).toHaveBeenCalledWith('Release is up-to-date')
   })
 })
