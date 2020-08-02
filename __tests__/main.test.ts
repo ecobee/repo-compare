@@ -54,7 +54,7 @@ describe('Run', () => {
     nock('https://hooks.slack.com')
       .persist()
       .post('/services/foo/bar', expectedSlackPost)
-      .reply(200, {text: 'success'})
+      .reply(200, 'success')
 
     const setOutput = jest.spyOn(core, 'setOutput')
     const debugMock = jest.spyOn(core, 'debug')
@@ -63,6 +63,9 @@ describe('Run', () => {
     expect(debugMock).toHaveBeenCalledWith('master is behind by 1 commit(s)')
     expect(debugMock).toHaveBeenCalledWith(
       'latest release date is 2013-02-27T19:35:32Z'
+    )
+    expect(debugMock).toHaveBeenCalledWith(
+      'Slack response: success'
     )
     expect(setOutput).toHaveBeenCalledWith('unreleased-commit-count', '1')
     expect(setOutput).toHaveBeenCalledWith(

@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
 import {Block} from '@slack/web-api'
-import {IncomingWebhook} from '@slack/webhook'
+import {IncomingWebhook, IncomingWebhookResult} from '@slack/webhook'
 
 const run = async (): Promise<void> => {
   try {
@@ -82,21 +82,19 @@ const run = async (): Promise<void> => {
       return
     }
 
-    ;(async () => {
-      const res = await webhook.send({
-        text: `${repo} Last Shipped Notification`,
-        username: slackUsername,
-        channel: slackChannel,
-        blocks: slackMessage(
-          repo,
-          lastReleaseDate,
-          comparison.html_url,
-          comparison.total_commits,
-          commits
-        )
-      })
-      core.debug(`Slack response: {res.text}`)
-    })()
+    const slackRes = await webhook.send({
+      text: `${repo} Last Shipped Notification`,
+      username: slackUsername,
+      channel: slackChannel,
+      blocks: slackMessage(
+        repo,
+        lastReleaseDate,
+        comparison.html_url,
+        comparison.total_commits,
+        commits
+      )
+    })
+    core.debug(`Slack response: ${slackRes.text}`)
   } catch (error) {
     core.setFailed(`repo-compare failure: ${error}`)
   }
