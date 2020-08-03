@@ -1,0 +1,31 @@
+name: "manual-trigger"
+on:
+  workflow_dispatch:
+    inputs:
+      include-prerelease:
+        description: Do you want to include pre-releases?
+        required: false
+        default: "false"
+      default-branch:
+        description: "What branch to compare releases against"
+        required: false
+        default: "master"
+      slack-channel:
+        description: "The channel to post slack messages to"
+        required: true
+      slack-username:
+        description: "The name of the bot that will post slack messages"
+        required: false
+        default: "shipit"
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ./
+      with:
+        include-prerelease: "${{ github.event.inputs.include-prerelease }}"
+        default-branch: "${{ github.event.inputs.default-branch }}"
+        slack-channel: "${{ github.event.inputs.slack-channel }}"
+        slack-username: "${{ github.event.inputs.slack-username }}"
