@@ -153,3 +153,5 @@ function slackMessage(
     commitsSummary
   ]
 }
+
+run()
