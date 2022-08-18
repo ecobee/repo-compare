@@ -28,7 +28,7 @@
   "devDependencies": {
     "@slack/web-api": "^5.11.0",
     "@slack/webhook": "^5.0.3",
-    "@actions/core": "1.1.1",
+    "@actions/core": "1.9.1",
     "@actions/github": "4.0.0",
     "@types/jest": "24.0.18",
     "@types/js-yaml": "3.12.1",
