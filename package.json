@@ -26,8 +26,8 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    "@slack/web-api": "^5.11.0",
-    "@slack/webhook": "^5.0.3",
+    "@slack/web-api": "^5.15.0",
+    "@slack/webhook": "^5.0.4",
     "@actions/core": "1.1.1",
     "@actions/github": "4.0.0",
     "@types/jest": "24.0.18",
